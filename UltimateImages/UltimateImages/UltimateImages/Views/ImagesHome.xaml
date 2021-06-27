@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UltimateImages.Views.ImagesHome"
+             Title="Ultimate Images"
+             BackgroundColor="#eee6fa">
+    <StackLayout>
+        <Grid Padding="5">
+            <Entry Text="{Binding SearchText}"
+                   HeightRequest="60"
+                   TextColor="#570099"
+                   HorizontalOptions="FillAndExpand"
+                   Placeholder="Search..."
+                   PlaceholderColor="#570099"
+                   ReturnCommand="{Binding SearchClickedCommand}"/>
+            <ImageButton Source="search_icon.png" 
+                         Padding="0,0,0,5"
+                         Command="{Binding SearchClickedCommand}"
+                         HorizontalOptions="End"
+                         WidthRequest="40"
+                         BackgroundColor="Transparent"/>
+        </Grid>
+
+        <Grid>
+            <StackLayout IsVisible="{Binding IsStatusVisible}"
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand">
+                <Label Text="{Binding StatusMessage}" TextColor="#000" FontSize="24"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding IsDataVisible}">
+                <ListView IsPullToRefreshEnabled="False"
+                          ItemsSource="{Binding Images}"
+                          HasUnevenRows="True" 
+                          SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame Padding="0" 
+                                       BorderColor="#000"
+                                       BackgroundColor="Transparent"
+                                       Margin="5"
+                                       CornerRadius="6"
+                                       HasShadow="True">
+                                    <ImageButton Source="{Binding webformatURL}"
+                                                 BackgroundColor="Transparent"
+                                                 Clicked="Image_Clicked" 
+                                                 Margin="0,4"
+                                                 CommandParameter="{Binding .}">
+                                    </ImageButton>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout Orientation="Horizontal"
+                     VerticalOptions="EndAndExpand"
+                     HorizontalOptions="CenterAndExpand"
+                     Spacing="20">
+                    <Button Text="&lt;"
+                    BackgroundColor="Transparent"
+                    FontSize="50"
+                    Command="{Binding PreviousClickedCommand}"/>
+                    <Label VerticalTextAlignment="Center"
+                   TextColor="#000"
+                   FontSize="20">
+                        <Label.Text>
+                            <MultiBinding StringFormat="{}Page {0} of {1}">
+                                <Binding Path="CurrentPageNo"/>
+                                <Binding Path="TotalPageCount"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>                    
+                    <Button Text="&gt;"
+                    BackgroundColor="Transparent"
+                    FontSize="50"
+                    Command="{Binding NextClickedCommand}"/>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+</ContentPage>

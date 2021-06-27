@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UltimateImages.Views.ImagesDisplay"
+             Title="Ultimate Images"
+             BackgroundColor="#eee6fa">
+    <Grid Margin="5">
+        <Image Source="{Binding Path=SelectedImage.largeImageURL}"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="StartAndExpand"/>
+        <StackLayout Orientation="Horizontal"
+                     VerticalOptions="EndAndExpand"
+                     HorizontalOptions="CenterAndExpand"
+                     Spacing="20">
+            <Button Text="&lt;"
+                    BackgroundColor="Transparent"
+                    FontSize="50"
+                    Command="{Binding PreviousClickedCommand}"/>
+            <Label VerticalTextAlignment="Center"
+                   TextColor="#000"
+                   FontSize="20">
+                <Label.Text>
+                    <MultiBinding StringFormat="{}{0} of {1}">
+                        <Binding Path="CurrentImageIndex"/>
+                        <Binding Path="TotalImageCount"/>
+                    </MultiBinding>
+                </Label.Text>
+            </Label>
+            <ImageButton Source="download_icon.png"
+                         HeightRequest="40"
+                         BackgroundColor="Transparent"
+                         Command="{Binding DownloadClickedCommand}"/>
+            <Button Text="&gt;"
+                    BackgroundColor="Transparent"
+                    FontSize="50"
+                    Command="{Binding NextClickedCommand}"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>
