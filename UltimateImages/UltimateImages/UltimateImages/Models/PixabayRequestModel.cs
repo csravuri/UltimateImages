@@ -42,7 +42,7 @@ namespace UltimateImages.Models
             if (string.IsNullOrWhiteSpace(normal))
                 return string.Empty;
 
-            return HttpUtility.UrlEncode(normal);
+            return HttpUtility.UrlEncode(normal.ToLower());
         }
 
         private string GetParameter(string name, string value)

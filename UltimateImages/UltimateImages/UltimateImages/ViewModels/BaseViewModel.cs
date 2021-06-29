@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using UltimateImages.Service;
 using Xamarin.Forms;
 
 namespace UltimateImages.ViewModels
@@ -11,6 +12,7 @@ namespace UltimateImages.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected INavigation Navigation;
+        protected IToastService ToastService = DependencyService.Get<IToastService>();
 
         public BaseViewModel(INavigation navigation)
         {

@@ -57,12 +57,15 @@
                      HorizontalOptions="CenterAndExpand"
                      Spacing="20">
                     <Button Text="&lt;"
-                    BackgroundColor="Transparent"
-                    FontSize="50"
-                    Command="{Binding PreviousClickedCommand}"/>
+                            BorderColor="#570099"
+                            BorderWidth="4"
+                            CornerRadius="6"
+                            BackgroundColor="Transparent"
+                            FontSize="50"
+                            Command="{Binding PreviousClickedCommand}"/>
                     <Label VerticalTextAlignment="Center"
-                   TextColor="#000"
-                   FontSize="20">
+                           TextColor="#000"
+                           FontSize="20">
                         <Label.Text>
                             <MultiBinding StringFormat="{}Page {0} of {1}">
                                 <Binding Path="CurrentPageNo"/>
@@ -71,9 +74,12 @@
                         </Label.Text>
                     </Label>                    
                     <Button Text="&gt;"
-                    BackgroundColor="Transparent"
-                    FontSize="50"
-                    Command="{Binding NextClickedCommand}"/>
+                            BorderColor="#570099"
+                            BorderWidth="4"
+                            CornerRadius="6"
+                            BackgroundColor="Transparent"
+                            FontSize="50"
+                            Command="{Binding NextClickedCommand}"/>
                 </StackLayout>
             </StackLayout>
         </Grid>

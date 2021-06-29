@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Windows.Input;
 using UltimateImages.Models;
+using UltimateImages.Service;
 using Xamarin.Forms;
 
 namespace UltimateImages.ViewModels
@@ -37,7 +38,7 @@ namespace UltimateImages.ViewModels
 
         public ICommand PreviousClickedCommand { get; private set; }
         public ICommand DownloadClickedCommand { get; private set; }
-        public ICommand NextClickedCommand { get; private set; }
+        public ICommand NextClickedCommand { get; private set; }       
 
         public ImagesDisplayViewModel(INavigation navigation, IEnumerable<Hit> images, Hit selectedImage) : base(navigation)
         {
@@ -61,8 +62,23 @@ namespace UltimateImages.ViewModels
         }
 
         private void ExecuteDownloadClickedCommand()
-        {            
-            DownloadFile(SelectedImage.largeImageURL, Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) );
+        {
+            IDownloadService downloadService = DependencyService.Get<IDownloadService>(DependencyFetchTarget.NewInstance);
+
+            downloadService.DownloadFile(SelectedImage.largeImageURL, "UltimateImages");
+            downloadService.OnFileDownloaded += OnFileDownloaded;
+        }
+
+        private void OnFileDownloaded(object sender, DownloadEventArgs e)
+        {
+            if (e.FileSaved)
+            {
+                ToastService.ShowLongAlert("Downloaded successfully");
+            }
+            else
+            {
+                ToastService.ShowLongAlert("Download failed");
+            }
         }
 
         private void ExecutePreviousClickedCommand()
@@ -71,15 +87,6 @@ namespace UltimateImages.ViewModels
             {
                 SelectedImage = images[--CurrentImageIndex - 1];
             }
-        }
-
-        private void DownloadFile(string fileURI, string location, Action onDownloadComplete = null)
-        {
-            WebClient client = new WebClient();
-            Uri uri = new Uri(fileURI);
-            
-            //client.DownloadFileCompleted += onDownloadComplete;
-            client.DownloadFile(fileURI, Path.Combine(location, "abc.png"));
         }
     }
 }
