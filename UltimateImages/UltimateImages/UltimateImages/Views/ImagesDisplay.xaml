@@ -29,6 +29,7 @@
             <ImageButton Source="download_icon.png"
                          HeightRequest="40"
                          BackgroundColor="Transparent"
+                         IsEnabled="{Binding IsDownloadEnabled}"
                          Command="{Binding DownloadClickedCommand}"/>
             <Button Text="&gt;"
                     BackgroundColor="Transparent"

@@ -12,7 +12,6 @@ namespace UltimateImages.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected INavigation Navigation;
-        protected IToastService ToastService = DependencyService.Get<IToastService>();
 
         public BaseViewModel(INavigation navigation)
         {

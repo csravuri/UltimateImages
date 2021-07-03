@@ -19,7 +19,11 @@ namespace UltimateImages.ViewModels
         public Hit SelectedImage
         {
             get => selectedImage;
-            set => SetProperty(ref selectedImage, value);
+            set
+            {
+                SetProperty(ref selectedImage, value);
+                IsDownloadEnabled = true;
+            }
         }
 
         private int currentImageIndex;
@@ -34,6 +38,13 @@ namespace UltimateImages.ViewModels
         {
             get => totalImageCount;
             set => SetProperty(ref totalImageCount, value);
+        }
+
+        private bool isDownloadEnabled = true;
+        public bool IsDownloadEnabled
+        {
+            get => isDownloadEnabled;
+            set => SetProperty(ref isDownloadEnabled, value);
         }
 
         public ICommand PreviousClickedCommand { get; private set; }
@@ -61,26 +72,6 @@ namespace UltimateImages.ViewModels
             }
         }
 
-        private void ExecuteDownloadClickedCommand()
-        {
-            IDownloadService downloadService = DependencyService.Get<IDownloadService>(DependencyFetchTarget.NewInstance);
-
-            downloadService.DownloadFile(SelectedImage.largeImageURL, "UltimateImages");
-            downloadService.OnFileDownloaded += OnFileDownloaded;
-        }
-
-        private void OnFileDownloaded(object sender, DownloadEventArgs e)
-        {
-            if (e.FileSaved)
-            {
-                ToastService.ShowLongAlert("Downloaded successfully");
-            }
-            else
-            {
-                ToastService.ShowLongAlert("Download failed");
-            }
-        }
-
         private void ExecutePreviousClickedCommand()
         {
             if (CurrentImageIndex - 1 > 0)
@@ -88,5 +79,28 @@ namespace UltimateImages.ViewModels
                 SelectedImage = images[--CurrentImageIndex - 1];
             }
         }
+
+        private void ExecuteDownloadClickedCommand()
+        {
+            IDownloadService downloadService = DependencyService.Get<IDownloadService>(DependencyFetchTarget.NewInstance);
+            downloadService.OnFileDownloaded += OnFileDownloaded;
+            IsDownloadEnabled = false;
+            ToastMessage.ShowLongAlert("Download started!");
+            downloadService.DownloadFile(SelectedImage.largeImageURL, "UltimateImages");
+        }
+
+        private void OnFileDownloaded(object sender, DownloadEventArgs e)
+        {
+            IsDownloadEnabled = true;
+            if (e.FileSaved)
+            {
+                ToastMessage.ShowLongAlert("Downloaded successfully!");
+            }
+            else
+            {
+                ToastMessage.ShowLongAlert("Download failed!");
+            }
+        }
+
     }
 }
