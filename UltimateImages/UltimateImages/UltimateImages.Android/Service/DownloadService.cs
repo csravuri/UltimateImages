@@ -1,16 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using UltimateImages.Droid.Service;
 using UltimateImages.Service;
@@ -25,20 +16,10 @@ namespace UltimateImages.Droid.Service
 
         public async Task DownloadFile(string url, string folderName)
         {
-            
-
-            string folderPath = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath, folderName);
-                        
             if(await PermissionsExists())
             {
                 try
                 {
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-
-                    WebClient webClient = new WebClient();
                     string fileName = Path.GetFileName(url);
 
                     if (fileName.Length > 10)
@@ -46,19 +27,16 @@ namespace UltimateImages.Droid.Service
                         fileName = Path.GetFileNameWithoutExtension(fileName).Substring(0, 10) + Path.GetExtension(fileName);
                     }
 
-                    string filePath = Path.Combine(folderPath, fileName);
-
-                    webClient.DownloadDataCompleted += new DownloadDataCompletedEventHandler(
-                        (sender, e) => OnDownloadComplete(e, filePath));
-
-                    webClient.DownloadDataAsync(new Uri(url), filePath);
-
-                    //webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(
-                    //    (sender, e) => OnFileDownloaded?.Invoke(this, new DownloadEventArgs(e.Error == null, filePath)));
-
-                    //webClient.DownloadFileAsync(new Uri(url), filePath);
+                    var source = Android.Net.Uri.Parse(url);
+                    DownloadManager.Request request = new DownloadManager.Request(source);
+                    request.SetAllowedOverRoaming(false);
+                    request.SetNotificationVisibility(DownloadVisibility.VisibleNotifyCompleted);
+                    request.SetDestinationInExternalPublicDir(Android.OS.Environment.DirectoryDownloads, Path.Combine(folderName, fileName));
+                    var manager = (DownloadManager)Application.Context.GetSystemService(Context.DownloadService);
+                     
+                    manager.Enqueue(request);
                 }
-                catch (Exception ex)
+                catch
                 {
                     OnFileDownloaded?.Invoke(this, new DownloadEventArgs(false));
                 }
@@ -82,12 +60,6 @@ namespace UltimateImages.Droid.Service
             }
 
             return (writeStatus == PermissionStatus.Granted) && (readStatus == PermissionStatus.Granted);
-        }
-
-        private void OnDownloadComplete(DownloadDataCompletedEventArgs e, string filePath)
-        {
-            File.WriteAllBytes(filePath, e.Result);
-            OnFileDownloaded?.Invoke(this, new DownloadEventArgs(e.Error == null, filePath));
-        }
+        }        
     }
 }
