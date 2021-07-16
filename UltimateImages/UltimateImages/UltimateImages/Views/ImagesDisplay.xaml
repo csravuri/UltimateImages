@@ -1,24 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ads="clr-namespace:UltimateImages.Ads"
              x:Class="UltimateImages.Views.ImagesDisplay"
              Title="Ultimate Images"
              BackgroundColor="#eee6fa">
-    <Grid Margin="5">
-        <Image Source="{Binding Path=SelectedImage.largeImageURL}"
+    
+        <Grid Margin="5,5,5,0">
+        <StackLayout Spacing="0">
+            <ads:AdsHolderView BackgroundColor="Green" HorizontalOptions="Fill"
+                           UnitID="ca-app-pub-5248171162686700/8671548278"/>
+            <Image Source="{Binding Path=SelectedImage.largeImageURL}"
                HorizontalOptions="FillAndExpand"
-               VerticalOptions="StartAndExpand"/>
-        <StackLayout Orientation="Horizontal"
+               VerticalOptions="StartAndExpand"/> 
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal"   
                      VerticalOptions="EndAndExpand"
                      HorizontalOptions="CenterAndExpand"
                      Spacing="20">
             <Button Text="&lt;"
-                    BackgroundColor="Transparent"
-                    FontSize="50"
-                    Command="{Binding PreviousClickedCommand}"/>
+                BackgroundColor="Transparent"
+                FontSize="50"
+                Command="{Binding PreviousClickedCommand}"/>
             <Label VerticalTextAlignment="Center"
-                   TextColor="#000"
-                   FontSize="20">
+                TextColor="#000"
+                FontSize="20">
                 <Label.Text>
                     <MultiBinding StringFormat="{}{0} of {1}">
                         <Binding Path="CurrentImageIndex"/>
@@ -27,14 +34,17 @@
                 </Label.Text>
             </Label>
             <ImageButton Source="download_icon.png"
-                         HeightRequest="40"
-                         BackgroundColor="Transparent"
-                         IsEnabled="{Binding IsDownloadEnabled}"
-                         Command="{Binding DownloadClickedCommand}"/>
+                        HeightRequest="40"
+                        BackgroundColor="Transparent"
+                        IsEnabled="{Binding IsDownloadEnabled}"
+                        Command="{Binding DownloadClickedCommand}"/>
             <Button Text="&gt;"
-                    BackgroundColor="Transparent"
-                    FontSize="50"
-                    Command="{Binding NextClickedCommand}"/>
+                BackgroundColor="Transparent"
+                FontSize="50"
+                Command="{Binding NextClickedCommand}"/>
         </StackLayout>
+
     </Grid>
+        
+    
 </ContentPage>

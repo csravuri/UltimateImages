@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:ads="clr-namespace:UltimateImages.Ads"
              x:Class="UltimateImages.Views.ImagesHome"
              Title="Ultimate Images"
              BackgroundColor="#eee6fa">
@@ -23,11 +24,14 @@
 
         <Grid>
             <StackLayout IsVisible="{Binding IsStatusVisible}"
+                         Spacing="0"
                          VerticalOptions="CenterAndExpand"
                          HorizontalOptions="CenterAndExpand">
                 <Label Text="{Binding StatusMessage}" TextColor="#000" FontSize="24"/>
+                <ads:AdsHolderView VerticalOptions="EndAndExpand" BackgroundColor="Green"
+                                   UnitID="ca-app-pub-5248171162686700/6583058094"/>
             </StackLayout>
-            <StackLayout IsVisible="{Binding IsDataVisible}">
+            <StackLayout IsVisible="{Binding IsDataVisible}" Spacing="0">
                 <ListView IsPullToRefreshEnabled="False"
                           ItemsSource="{Binding Images}"
                           HasUnevenRows="True" 
@@ -55,12 +59,14 @@
                 <StackLayout Orientation="Horizontal"
                      VerticalOptions="EndAndExpand"
                      HorizontalOptions="CenterAndExpand"
-                     Spacing="20">
+                     Spacing="20" HeightRequest="50">
                     <Button Text="&lt;"
                             BorderColor="#570099"
                             BorderWidth="4"
-                            CornerRadius="6"
-                            BackgroundColor="Transparent"
+                            CornerRadius="100"
+                            BackgroundColor="Transparent" 
+                            WidthRequest="50" 
+                            Padding="0,-10,0,0"
                             FontSize="50"
                             Command="{Binding PreviousClickedCommand}"/>
                     <Label VerticalTextAlignment="Center"
@@ -76,11 +82,15 @@
                     <Button Text="&gt;"
                             BorderColor="#570099"
                             BorderWidth="4"
-                            CornerRadius="6"
+                            CornerRadius="100"
                             BackgroundColor="Transparent"
+                            WidthRequest="50" 
+                            Padding="0,-10,0,0"
                             FontSize="50"
                             Command="{Binding NextClickedCommand}"/>
                 </StackLayout>
+                <ads:AdsHolderView VerticalOptions="EndAndExpand" BackgroundColor="Green"
+                                   UnitID="ca-app-pub-5248171162686700/6108608890"/>
             </StackLayout>
         </Grid>
     </StackLayout>
